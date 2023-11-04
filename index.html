@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mental Health Chatbot</title>
+</head>
+<body>
+    <h1>Mental Health Chatbot</h1>
+    <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Enter your message..." />
+        <input type="submit" value="Send" />
+    </form>
+    <div id="chat-box"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#chat-form').submit(function(event) {
+                event.preventDefault();
+                var userMessage = $('#user-input').val();
+                $('#chat-box').append('<p><strong>You:</strong> ' + userMessage + '</p>');
+                $('#user-input').val('');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_response',
+                    data: {user_input: userMessage},
+                    success: function(data) {
+                        var botResponse = data.response;
+                        $('#chat-box').append('<p><strong>Bot:</strong> ' + botResponse + '</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
